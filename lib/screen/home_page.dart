@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_in_flutter/constant/my_themes.dart';
 import 'package:todo_in_flutter/controllers/task_controller.dart';
+import 'package:todo_in_flutter/model/taskModel.dart';
 import 'package:todo_in_flutter/services/theme_services.dart';
 
 import '../widgets/button.dart';
@@ -148,6 +149,9 @@ class _HomePageState extends State<HomePage> {
                       GestureDetector(
                         onTap: () {
                           print("tapped");
+                          // second param is Model class obj...
+                          _showBottomSheet(
+                              context, _taskController.taskList[index]);
                         },
                         child: TaskTile(_taskController.taskList[index]),
                       ),
@@ -159,6 +163,112 @@ class _HomePageState extends State<HomePage> {
           },
         );
       }),
+    );
+  }
+
+  _showBottomSheet(BuildContext context, TaskModel task) {
+    Get.bottomSheet(
+      Container(
+        padding: const EdgeInsets.only(top: 4),
+        // isCompleted by default is 0
+        height: task.isCompleted == 1
+            ? MediaQuery.of(context).size.height * 0.24
+            : MediaQuery.of(context).size.height * 0.32,
+        // check for dark mode...
+        color: Get.isDarkMode ? darkGreyClr : Colors.white,
+        // bottom sheet have 4 child so i use column
+        child: Column(
+          children: [
+            // item no 1...
+            Container(
+              height: 6,
+              width: 120,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Get.isDarkMode ? Colors.grey[600] : Colors.grey[300],
+              ),
+            ),
+
+            // spacer take all the empty space
+            Spacer(),
+            // item no 2 btn if isCompleted or not
+            task.isCompleted == 1
+                ? Container()
+                : _bottomSheetBTN(
+                    context: context,
+                    lable: 'Task Completed',
+                    onTap: () {
+                      Get.back();
+                    },
+                    clr: primaryClr,
+                  ),
+            // btn 2 delete
+            //SizedBox(height: 20),
+            _bottomSheetBTN(
+              context: context,
+              lable: 'Delete Task',
+              onTap: () {
+                _taskController.delete(task);
+                _taskController.getTasks();
+                Get.back();
+              },
+              clr: Colors.red[300]!,
+            ),
+
+            // btn 3
+            SizedBox(height: 20),
+            _bottomSheetBTN(
+              context: context,
+              lable: 'Close',
+              onTap: () {
+                Get.back();
+              },
+              clr: Colors.red[300]!,
+              isClose: true,
+            ),
+            SizedBox(height: 10),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // BOTTOM SHET has 3 btns so we create reuseable btn
+  // curly braces show optional param
+  _bottomSheetBTN({
+    required String lable,
+    required Function()? onTap,
+    required Color clr,
+    bool isClose = false,
+    required BuildContext context,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.symmetric(vertical: 4),
+        height: 55,
+        width: MediaQuery.of(context).size.width * 0.9,
+        decoration: BoxDecoration(
+          border: Border.all(
+            width: 2,
+            // yahan per condition k ander condition hai bhai
+            color: isClose == true
+                ? Get.isDarkMode
+                    ? Colors.grey[600]!
+                    : Colors.grey[300]!
+                : clr,
+          ),
+          borderRadius: BorderRadius.circular(20),
+          color: isClose == true ? Colors.transparent : clr,
+        ),
+        child: Center(
+          child: Text(
+            lable,
+            style:
+                isClose ? titleStyle : titleStyle.copyWith(color: Colors.white),
+          ),
+        ),
+      ),
     );
   }
 }
