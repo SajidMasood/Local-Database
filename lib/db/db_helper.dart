@@ -43,7 +43,6 @@ class DBHelper {
     return await _db?.insert(_tableName, taskModel!.toJson()) ?? 1;
   }
 
-
   // get data from db
   static Future<List<Map<String, dynamic>>> query() async {
     print("query function called");
@@ -53,5 +52,14 @@ class DBHelper {
   // Delete Method ...
   static delete(TaskModel task) async {
     return await _db!.delete(_tableName, where: 'id=?', whereArgs: [task.id]);
+  }
+
+  //Update Method.....throught id
+  static update(int id) async {
+    return await _db!.rawUpdate('''
+      UPDATE tasks
+      SET isCompleted = ?
+      WHERE id = ?
+      ''', [1, id]);
   }
 }

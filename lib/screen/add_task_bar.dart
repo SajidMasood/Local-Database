@@ -339,6 +339,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
       endTime: _endTime,
       remind: _selectedRemind,
       repeat: _selectedRepeat,
+      color: _selectedColor,
       isCompleted: 0,
     ));
     print("My Return Db Id is $value");

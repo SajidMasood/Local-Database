@@ -198,6 +198,8 @@ class _HomePageState extends State<HomePage> {
                     context: context,
                     lable: 'Task Completed',
                     onTap: () {
+                      // calling update method in controller
+                      _taskController.markTaskCompleted(task.id!);
                       Get.back();
                     },
                     clr: primaryClr,
@@ -209,7 +211,7 @@ class _HomePageState extends State<HomePage> {
               lable: 'Delete Task',
               onTap: () {
                 _taskController.delete(task);
-                _taskController.getTasks();
+                
                 Get.back();
               },
               clr: Colors.red[300]!,
