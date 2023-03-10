@@ -20,6 +20,8 @@ dependencies:
   date_picker_timeline: ^1.2.3
   # add sqflite -> model class | db_helper class required
   sqflite: any
+  # animation k lie hai...
+  flutter_staggered_animations: any 
 
 dev_dependencies:
   flutter_test:

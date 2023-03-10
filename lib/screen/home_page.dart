@@ -1,5 +1,6 @@
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -8,6 +9,7 @@ import 'package:todo_in_flutter/controllers/task_controller.dart';
 import 'package:todo_in_flutter/services/theme_services.dart';
 
 import '../widgets/button.dart';
+import '../widgets/task_tile.dart';
 import 'add_task_bar.dart';
 
 class HomePage extends StatefulWidget {
@@ -137,17 +139,21 @@ class _HomePageState extends State<HomePage> {
           itemCount: _taskController.taskList.length,
           itemBuilder: (_, index) {
             print(_taskController.taskList.length);
-            return GestureDetector(
-              onTap: () {
-                _taskController.delete(_taskController.taskList[index]);
-                _taskController.getTasks();
-              },
-              child: Container(
-                width: 100,
-                height: 50,
-                color: Colors.green,
-                margin: EdgeInsets.only(bottom: 10),
-                child: Text(_taskController.taskList[index].title.toString()),
+            return AnimationConfiguration.staggeredList(
+              position: index,
+              child: SlideAnimation(
+                child: FadeInAnimation(
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          print("tapped");
+                        },
+                        child: TaskTile(_taskController.taskList[index]),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             );
           },

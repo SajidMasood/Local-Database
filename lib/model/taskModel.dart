@@ -39,7 +39,7 @@ class TaskModel {
 
   // this is convert data into db..
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['id'] = id;
     data['title'] = title;
     data['note'] = note;
